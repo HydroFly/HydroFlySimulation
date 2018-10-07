@@ -88,5 +88,6 @@ while t_plus <= mission_end_time:
     graph.record("velocity", velocity, t_plus, "Velocity", show_y_axis=True)
     graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle")
     graph.record("mass_water", mass_water, t_plus, "Mass of Water")
+    graph.record("test", pressure, mass_dry, "Pressure vs Dry Mass")
 
 graph.show_plots()

@@ -1,65 +1,89 @@
-import numpy as np
-
-from Calculator import Calculator as calc
 from Constants import Constants
+from Calculator import Calculator
+from PID_Controller import PIDController
+from numpy import *
 
 
 class FlightController:
-<<<<<<< HEAD
-    height = 0
-    mass = 0
-    mass_total = 0
-    duty_cycle = 0
-    m_dot_max = 0
-    mass_water = 0
-    propellant_volume = 3
-    ue = 0
-    velocity = 0
-    pressure = 0
-    pipe_height = 0.5
-    nozzle_diam = 0.01
+    mode = 1
 
-    def __init__(self, hardware_interface):
-        self.sys = hardware_interface
-        self.mass_water = 18  # mass of water [kg]
-        self.mass_structure = 2  # mass of structure [kg]
-        self.mass_controls = 1  # mass of control system [kg]
-        self.mass_tot = self.mass_water + self.mass_structure + mass_controls
-=======
-    def __init__(self, system, environment):
-        self.sys = system
->>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
+    def __init__(self, sys):
+        self.sys = sys
+        self.PID = PIDController(1, 0, 0, sys.dt_simulation)
 
-    def do_execution_cycle(self):
-        self.sys.
+        self.target_height = 2
+        self.duty_cycle = 1
 
-        
+    def update_cycle(self):
+        sys = self.sys
+        if self.mode == 1:
+            # Test condition to advance modes
+            if sys.height >= self.target_height:
+                self.mode = 2
+                self.PID.clean()
 
-    def get_duty_cycle(self, target_height):
-        delta_height = target_height - self.height
-        potential_height = calc.potential_height(self.mass, self.height, self.velocity)
+            height = sys.height
+            velocity = sys.velocity
+            gravity = Constants.gravity
+            target_height = self.target_height
+            tuning_time = sys.tuning_time
+            dt_simulation = sys.dt_simulation
+            mass_tot = sys.mass_tot
+            ue = sys.ue
+            t_plus = sys.t_plus
+            m_dot_max = sys.m_dot_max
+            dt_physical = sys.dt_physical
 
-        # Calculate target velocity if the rocket is below the target height
-        if self.height < target_height:
-            target_velocity = calc.delta_v_required(delta_height)
+            # Find Calculated Value and potentials
+            height_cv = self.PID.get_cv(target_height, height)  # target height - height
 
-        # Shut off the engine if the rocket's potential height is greater than the target height
-        if potential_height > target_height or self.height > target_height:
-            target_velocity = 0
+            target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2)
 
-        # if Calculator.remainder(dt, dtPWM) == 0:
-        ue = calc.exit_velocity(self.pressure, self.pipe_height)
-        nozzle_area = calc.nozzle_area(self.nozzle_diam)
-        m_dot_max = calc.m_dot(nozzle_area, ue)
+            target_d_mass = mass_tot * exp((gravity * dt_simulation / ue) - (target_dv / ue))
+            m_dot_target = (mass_tot - target_d_mass) / dt_simulation
 
-        # target_dv = PID.get_cv(target_velocity, velocity)
-        target_dv = target_velocity - self.velocity
+            # PWM, PID
+            if Calculator.modulus(t_plus, dt_physical) == 0:
+                self.duty_cycle = (m_dot_target / m_dot_max)
+                if self.duty_cycle < 0:
+                    self.duty_cycle = 0
+                if self.duty_cycle > 1:
+                    self.duty_cycle = 1
 
-        # Calculate target delta mass and mass flow rate
-        target_d_mass = calc.target_d_mass(self.mass_total, ue, target_dv, self.sys.get_delta_time())
-        m_dot = (self.mass - target_d_mass) / self.sys.get_delta_time()
+        if self.mode == 2:
+            # Test condition to advance modes
+            if sys.height >= self.target_height:
+                self.mode = 2
 
-        # Calculate target duty cycle
-        duty_cycle = calc.duty_cycle(m_dot, m_dot_max)
+            height = sys.height
+            velocity = sys.velocity
+            gravity = Constants.gravity
+            target_height = self.target_height
+            tuning_time = sys.tuning_time
+            dt_simulation = sys.dt_simulation
+            mass_tot = sys.mass_tot
+            ue = sys.ue
+            t_plus = sys.t_plus
+            m_dot_max = sys.m_dot_max
+            dt_physical = sys.dt_physical
 
-        return duty_cycle
+            # Find Calculated Value and potentials
+            height_cv = self.PID.get_cv(target_height, height)  # target height - height
+
+            target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2)
+
+            target_d_mass = mass_tot * exp((gravity * dt_simulation / ue) - (target_dv / ue))
+            m_dot_target = (mass_tot - target_d_mass) / dt_simulation
+
+            # PWM, PID
+            if Calculator.modulus(t_plus, dt_physical) == 0:
+                self.duty_cycle = (m_dot_target / m_dot_max)
+                if self.duty_cycle < 0:
+                    self.duty_cycle = 0
+                if self.duty_cycle > 1:
+                    self.duty_cycle = 1
+
+        if self.mode == 3:
+            pass
+
+        return self.duty_cycle

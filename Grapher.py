@@ -35,11 +35,12 @@ class Grapher:
         return self.time
 
     def show_plots(self):
-        i = 1
-        j = 1
+        i = 2
+        j = 3
+        k = 1
 
         for plot in self.data:
-            plt.subplot('23' + str(i))
+            plt.subplot(str(i) + str(j) + str(k))
             plt.plot(self.get_time(), self.get_data(plot), '-')
             plt.plot(self.get_time(), np.full(len(self.get_time()), self.get_latest(plot)), '--')
             plt.title(self.data[plot]['title'])
@@ -52,7 +53,7 @@ class Grapher:
             if self.data[plot]['show_y_axis']:
                 plt.axhline(0, color='red')
 
-            i += 1
+            k += 1
         f = open('log.txt', 'a')
         #f.write(self.output)
 

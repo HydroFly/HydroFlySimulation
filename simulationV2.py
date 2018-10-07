@@ -1,6 +1,6 @@
 # HydroFly Master Simulation
 # Version 1.3
-# Adam Bennabou, Thomas Slusser, Russell Weas
+# Adam Benabbou, Thomas Slusser, Russell Weas
 
 from Grapher import Grapher
 from Calculator import Calculator
@@ -8,9 +8,10 @@ from Calculator import Calculator
 from PID_Controller import PIDController
 
 from numpy import *
+import numpy as np
 
 ############ Assumptions ###########
-mass_water = 20  # mass of water [kg]
+mass_water = 10  # mass of water [kg]
 mass_dry = 0.2  # dry mass including stuctures and electronics... will update later
 mass_tot = mass_water + mass_dry
 mass_tot_new = mass_tot
@@ -34,7 +35,7 @@ nozzle_area = Calculator.nozzle_area(nozzle_diam)
 ###### Simulation Timing ######
 t_plus = 0
 dt_simulation = 0.01
-dt_physical = 0.05
+dt_physical = 0.1
 mission_end_time = 120
 timermode2 = 0
 
@@ -156,6 +157,10 @@ while t_plus <= mission_end_time:
     graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle")
     graph.record("mass_water", mass_water, t_plus, "Mass of Water")
     graph.record("dv", dv, t_plus, "dv")
-    graph.record("potentail height", ue * log(asdf / mass_tot_new), t_plus, "asdfasdfasdf height")
+
+for dry_mass in np.arange(0,10,.1):
+    # Calculate
+    pass
+
 
 graph.show_plots()
