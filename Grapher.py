@@ -6,6 +6,8 @@ class Grapher:
     def __init__(self):
         self.data = {}
         self.time = []
+        self.output = ""
+        
 
     def record(self, name, value, t, title, only_positive=False, show_y_axis=False):
         if not self.data.get(name, None):
@@ -18,6 +20,8 @@ class Grapher:
 
         if len(self.time) < len(self.data[name]['values']):
             self.time.append(t)
+
+        self.output += (str(round(t,4))  + ',' + title + ',' + str(value) + "\n")
 
     def get_data(self, name):
         if self.data.get(name, None):
@@ -32,6 +36,7 @@ class Grapher:
 
     def show_plots(self):
         i = 1
+        j = 1
 
         for plot in self.data:
             plt.subplot('23' + str(i))
@@ -48,5 +53,7 @@ class Grapher:
                 plt.axhline(0, color='red')
 
             i += 1
+        f = open('log.txt', 'a')
+        #f.write(self.output)
 
         plt.show()

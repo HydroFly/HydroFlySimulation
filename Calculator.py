@@ -1,21 +1,20 @@
 import numpy as np
 from Constants import Constants
-from Environment import Environment
-
 
 class Calculator:
     @staticmethod
     def nozzle_area(nozzle_diam):
-        return np.pi * nozzle_diam ** 2
-
+        return np.pi * (nozzle_diam/2) ** 2
+        #check valid 10/06/18 - Thomas Slusser
     @staticmethod
     def potential_height(mass, height, velocity):
-        return height + 0.5 * mass * velocity ** 2
-
+        #return height + 0.5 * mass * velocity ** 2
+        return height + (0.5*(velocity**2)/abs(Constants.gravity))
+        #check valid 10/06/18 - Thomas Slusser
     @staticmethod
     def exit_velocity(pressure, pipe_height):
         return np.sqrt(2 * ((pressure / Constants.rho_water) + Constants.gravity * pipe_height))
-
+        # assumed correct due to work with Chandler - 10/06/18 
     @staticmethod
     def m_dot(nozzle_area, exit_velocity):
         m_dot = Constants.rho_water * nozzle_area * exit_velocity
@@ -28,6 +27,8 @@ class Calculator:
         duty_cycle = m_dot / m_dot_max
         if duty_cycle > 1:
             duty_cycle = 1
+        if duty_cycle < 0:
+            duty_cycle = 0
 
         return duty_cycle
 

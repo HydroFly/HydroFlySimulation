@@ -5,18 +5,13 @@ from Constants import Constants
 
 
 class FlightController:
-    height = 0
-    mass = 0
-    velocity = 0
-    pressure = 0
-    pipe_height = 0.5
-    nozzle_diam = 0.01
-
-    def __init__(self, hardware_interface):
-        self.sys = hardware_interface
+    def __init__(self, system, environment):
+        self.sys = system
 
     def do_execution_cycle(self):
-        dc = self.get_duty_cycle(10)
+        self.sys.
+
+        
 
     def get_duty_cycle(self, target_height):
         delta_height = target_height - self.height
