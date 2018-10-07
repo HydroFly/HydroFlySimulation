@@ -35,12 +35,19 @@ class Grapher:
         return self.time
 
     def show_plots(self):
-        i = 2
-        j = 3
+        i = 1
+        j = 1
         k = 1
-
         for plot in self.data:
-            plt.subplot(str(i) + str(j) + str(k))
+            if k > i * j:
+                if i > j:
+                    j += 1
+                else:
+                    i += 1
+            k += 1
+        k = 1
+        for plot in self.data:
+            plt.subplot(str(j) + str(i) + str(k))
             plt.plot(self.get_time(), self.get_data(plot), '-')
             plt.plot(self.get_time(), np.full(len(self.get_time()), self.get_latest(plot)), '--')
             plt.title(self.data[plot]['title'])
@@ -55,6 +62,6 @@ class Grapher:
 
             k += 1
         f = open('log.txt', 'a')
-        #f.write(self.output)
+        f.write(self.output)
 
         plt.show()
