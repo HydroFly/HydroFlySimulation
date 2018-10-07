@@ -1,0 +1,6 @@
+.vscode/
+venv/
+.floo
+.idea
+__pycache__/
+.flooignore
