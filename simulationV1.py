@@ -1,69 +1,92 @@
-# -*- coding: utf-8 -*-
-# Simulation V1.0
-# HydroFly Master Simulation File
-# Adam Benabbou, Thomas Slusser, Russell Weas
-# Last Updated 3 October 2018
-
-# uses underscore_notation for variables
-import numpy as np
+# HydroFly Master Simulation
+# Version 1.3
+# Adam Bennabou, Thomas Slusser, Russell Weas
 
 from Grapher import Grapher
 from Calculator import Calculator
-from Constants import Constants
-from FlightController import FlightController
-from HardwareInterfaceDummy import HardwareInterfaceDummy
+from System import System
+from PID_Controller import PIDController
 
-calc = Calculator()
-graph = Grapher()
-sys = HardwareInterfaceDummy()
-fc = FlightController(sys)
+from numpy import *
 
+############ Assumptions ###########
+mass_water = 18  # mass of water [kg]
+mass_dry = 0  # dry mass including stuctures and electronics... will update later
+mass_tot = mass_water + mass_dry
 
-############ INPUTS ###########
-mass_water = 18     # mass of water [kg]
-mass_structure = 2  # mass of structure [kg]
-mass_controls = 1   # mass of control system [kg]
-mass_tot = mass_water + mass_structure + mass_controls
+gravity = -9.81
+rho_water = 997
 
-pressure_original = 5000000  # Original pressure of pressurant [Pa] 0.5 MPa
+height = 0
+velocity = 0
+
+pressure = 500000  # Original pressure of pressurant [Pa] 0.5 MPa
 volume_gas_orig = 3  # volume of pressurant [m^3]
-target_height = 3    # mission profile height [m]
-pipe_height = .5     # difference in height between nozzle and pressure tanks [m]
+target_height = 3  # mission profile height [m]
+pipe_height = .5  # difference in height between nozzle and pressure tanks [m]
 
 nozzle_diam = 0.01  # [m]
+nozzle_area = Calculator.nozzle_area(nozzle_diam)
 
-while sys.get_t_plus() <= 300:
-    fc.do_execution_cycle()
+###### Simulation Timing ######
+t_plus = 0
+dt_simulation = 0.001
+dt_physical = 0.02
+mission_end_time = 60
 
-    m_dot = fc.duty_cycle * fc.m_dot_max
-    new_vehicle_mass = fc.mass_total - m_dot * sys.get_delta_time()
-    fc.mass_water -= m_dot * sys.get_delta_time()
+graph = Grapher()
+sys = System()
+PID = PIDController(1, 0, 0, dt_physical)
 
-    fc.propellant_volume += m_dot / Constants.rho_water * sys.get_delta_time()
-    fc.pressure *= volume_gas_orig / fc.propellant_volume
+while t_plus <= mission_end_time:
+    # Mode 1    = goto and maintain 2 meters    (target = 2m)
+    # Mode 1.5  = start 10 second timer         (target = 2m)
+    # Mode 2    = go back to ground             (target = 0m)
 
-    fc.velocity += fc.ue * np.log(fc.mass_total / new_vehicle_mass) + Constants.gravity * sys.get_delta_time()
-    fc.height += fc.velocity * sys.get_delta_time()
+    target_height = 2
+    height_cv = PID.get_cv(target_height, height)
+    ue = sqrt(2 * (pressure / rho_water + gravity * pipe_height))
 
-    # Test Exceptions
-    if fc.mass_water <= 0:
-        fc.mass_water = 0
-        self.fc.dv = 0
-        raise Exception('out of water')
+    delta_height = target_height - height
+    potential_height = Calculator.potential_height(mass_tot, height, velocity)
 
-    if fc.height <= 0:
-        fc.height = 0
-        fc.velocity = 0
+    if potential_height >= target_height or height > target_height:
+        target_velocity = 0
+    else:
+        target_velocity = Calculator.delta_v_required(delta_height)
+        # duty_cycle = 1
 
-    sys.next_cycle()
+    m_dot_max = Calculator.m_dot(nozzle_area, ue)
+    if mass_water <= 0:
+        m_dot_max = 0  # oh shit, I'm about to fucking fall
 
-    # Collect data
-    graph.record("height", height, sim.get_time(), "Height", only_positive=True)
-    graph.record("velocity", velocity, sim.get_time(), "Velocity", show_y_axis=True)
-    graph.record("target_velocity", target_velocity, sim.get_time(), "Target Vel")
-    graph.record("duty_cycle", duty_cycle, sim.get_time(), "Duty Cycle")
-    graph.record("mass_water", mass_water, sim.get_time(), "Mass of Water")
-    graph.record("mass total", mass_tot, sim.get_time(), "Mass total")
+    target_dv = PID.get_cv(target_velocity, velocity)
 
-# Plot data
+    target_d_mass = Calculator.target_d_mass(mass_tot, ue, target_dv, dt_simulation)
+    m_dot_target = mass_tot / target_d_mass / dt_simulation
+
+    duty_cycle = Calculator.duty_cycle(m_dot_target, m_dot_max)
+
+    # PWM, PID
+    if Calculator.modulus(t_plus, dt_physical) == 0:
+        m_dot = duty_cycle * m_dot_max
+
+    if height < 0:
+        height = 0  # yes, the ground surprisingly exists and no it is not a sink hole
+        velocity = 0
+
+    mass_tot_new = mass_tot - m_dot * dt_simulation
+    mass_water -= m_dot * dt_simulation
+
+    dv = gravity * dt_simulation + ue * log(mass_tot / mass_tot_new)
+    mass_tot = mass_tot_new
+    velocity += dv
+    height += velocity * dt_simulation
+
+    t_plus += dt_simulation
+    graph.record("height", height, t_plus, "Height", only_positive=True)
+    graph.record("velocity", velocity, t_plus, "Velocity", show_y_axis=True)
+    graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle")
+    graph.record("mass_water", mass_water, t_plus, "Mass of Water")
+
 graph.show_plots()

@@ -1,7 +1,5 @@
 import numpy as np
 from Constants import Constants
-from Environment import Environment
-
 
 class Calculator:
     @staticmethod
@@ -28,6 +26,8 @@ class Calculator:
         duty_cycle = m_dot / m_dot_max
         if duty_cycle > 1:
             duty_cycle = 1
+        if duty_cycle < 0:
+            duty_cycle = 0
 
         return duty_cycle
 

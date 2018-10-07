@@ -7,6 +7,12 @@ from Constants import Constants
 class FlightController:
     height = 0
     mass = 0
+    mass_total = 0
+    duty_cycle = 0
+    m_dot_max = 0
+    mass_water = 0
+    propellant_volume = 3
+    ue = 0
     velocity = 0
     pressure = 0
     pipe_height = 0.5
@@ -14,6 +20,10 @@ class FlightController:
 
     def __init__(self, hardware_interface):
         self.sys = hardware_interface
+        self.mass_water = 18  # mass of water [kg]
+        self.mass_structure = 2  # mass of structure [kg]
+        self.mass_controls = 1  # mass of control system [kg]
+        self.mass_tot = self.mass_water + self.mass_structure + mass_controls
 
     def do_execution_cycle(self):
         dc = self.get_duty_cycle(10)
