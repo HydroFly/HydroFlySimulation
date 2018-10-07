@@ -1,6 +1,7 @@
 # HydroFly Master Simulation
 # Version 1.3
 # Adam Benabbou, Thomas Slusser, Russell Weas
+import matplotlib
 
 from Grapher import Grapher
 from Calculator import Calculator
@@ -8,12 +9,19 @@ from Calculator import Calculator
 from PID_Controller import PIDController
 
 from numpy import *
+import matplotlib.pyplot as plt
 import numpy as np
 
 graph = Grapher()
 
+from matplotlib import style
+
 
 def run(mass_dry):
+    # plt.ion()
+    style.use('bmh')
+    # style.use('fivethirtyeight')
+    # style.use('ggplot')
     ############ Assumptions ###########
     mass_water = 10  # mass of water [kg]
     # mass_dry = 0.2  # dry mass including stuctures and electronics... will update later
@@ -156,8 +164,8 @@ def run(mass_dry):
 
         t_plus += dt_simulation
         graph.record("height", height, t_plus, "Height", only_positive=True)
-        # graph.record("velocity", velocity, t_plus, "Velocity", show_y_axis=True)
-        # graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle")
-        # graph.record("mass_water", mass_water, t_plus, "Mass of Water")
-        # graph.record("dv", dv, t_plus, "dv")
+        graph.record("velocity", velocity, t_plus, "Velocity", show_y_axis=True)
+        graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle")
+        graph.record("mass_water", mass_water, t_plus, "Mass of Water")
+        graph.record("dv", dv, t_plus, "dv")
     # graph.show_plots()
