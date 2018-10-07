@@ -1,8 +1,13 @@
 from SimulationV2 import run, graph
 import numpy as np
-# dry_weights = np.arange(0,3,1)
+import matplotlib.pyplot as plt
+dry_weights = np.arange(0.1,2,.1)
 
 # for weight in dry_weights:
+#     plt.figure('dry mass = ' + str(weight) + 'kg')
 #     run(weight)
-run(1)
+#     graph.show_plots()
+#     graph.clean_data()
+
+run(3)
 graph.show_plots()

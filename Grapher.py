@@ -7,9 +7,10 @@ class Grapher:
         self.data = {}
         self.time = []
         self.output = ""
+        self.vlines = []
         
 
-    def record(self, name, value, t, title, only_positive=False, show_y_axis=False):
+    def record(self, name, value, t, title, only_positive=False, show_y_axis=False, bottom_at_zero = False):
         if not self.data.get(name, None):
             self.data[name] = {'values': []}
 
@@ -17,11 +18,17 @@ class Grapher:
         self.data[name]['title'] = title
         self.data[name]['only_positive'] = only_positive
         self.data[name]['show_y_axis'] = show_y_axis
+        self.data[name]['bottom_at_zero'] = bottom_at_zero
 
         if len(self.time) < len(self.data[name]['values']):
             self.time.append(t)
 
         self.output += (str(round(t,4))  + ',' + title + ',' + str(value) + "\n")
+
+    def clean_data(self):
+        self.data = {}
+        self.time = []
+        self.output = ""
 
     def get_data(self, name):
         if self.data.get(name, None):
@@ -52,6 +59,8 @@ class Grapher:
             plt.plot(self.get_time(), np.full(len(self.get_time()), self.get_latest(plot)), '--')
             plt.title(self.data[plot]['title'])
             bottom, top = plt.ylim()
+            if self.data[plot]['bottom_at_zero']:
+                plt.ylim(0, top)
 
             if self.data[plot]['only_positive']:
                 plt.ylim(0, top)
@@ -59,6 +68,9 @@ class Grapher:
 
             if self.data[plot]['show_y_axis']:
                 plt.axhline(0, color='red')
+
+            for x in self.vlines:
+                plt.axvline(x=x, color='green', linestyle='--')
 
             k += 1
         f = open('log.txt', 'a')
