@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e90bee66-a921-4999-976d-6ed593ba1ca5" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/System.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/simulationV2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
@@ -11,6 +12,16 @@
       <change beforePath="$PROJECT_DIR$/FlightController.py" beforeDir="false" afterPath="$PROJECT_DIR$/FlightController.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PID_Controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PID_Controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulationV1.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulationV1.py" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/SimulationV2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/HydroFlySimulation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/HydroFlySimulation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlightController.py" beforeDir="false" afterPath="$PROJECT_DIR$/FlightController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grapher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Grapher.py" afterDir="false" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +65,43 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="152064255">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="SimulationV2" value="1" />
+          <entry key="py" value="42" />
+          <entry key="txt" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="PLAIN_TEXT" value="3" />
+          <entry key="Python" value="43" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="SimulationV2" value="27" />
+          <entry key="dummy" value="3" />
+          <entry key="py" value="149" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="3" />
+          <entry key="Python" value="176" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FavoritesManager">
     <favorites_list name="HydroFlySimulation" />
@@ -61,6 +109,7 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/simulationV1.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="431">
@@ -80,10 +129,17 @@
               <folding>
                 <element signature="e#90#117#0" expanded="true" />
               </folding>
+=======
+        <entry file="file://$PROJECT_DIR$/PID_Controller.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Grapher.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -110,6 +166,13 @@
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SimulationV2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
             </state>
           </provider>
         </entry>
@@ -117,11 +180,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Calculator.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="493">
               <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
+=======
+            <state relative-caret-position="234">
+              <caret line="36" column="62" selection-start-line="36" selection-start-column="62" selection-end-line="36" selection-end-column="71" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
             </state>
           </provider>
         </entry>
@@ -178,18 +246,23 @@
         <option value="$PROJECT_DIR$/Simulation.py" />
         <option value="$PROJECT_DIR$/HardwareInterface.py" />
         <option value="$PROJECT_DIR$/HardwareInterfaceDummy.py" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/System.py" />
         <option value="$PROJECT_DIR$/FlightController.py" />
         <option value="$PROJECT_DIR$/simulationV1.py" />
         <option value="$PROJECT_DIR$/Calculator.py" />
         <option value="$PROJECT_DIR$/PID_Controller.py" />
         <option value="$PROJECT_DIR$/simulationV2.py" />
+=======
+        <option value="$PROJECT_DIR$/SimulationV2" />
+        <option value="$PROJECT_DIR$/SimulationV2.py" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-39" />
-    <option name="y" value="222" />
+    <option name="x" value="-1829" />
+    <option name="y" value="-11" />
     <option name="width" value="1750" />
     <option name="height" value="970" />
   </component>
@@ -230,7 +303,15 @@
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="delta_v&#9;null&#9;null&#10;SIm&#9;FILE&#9;file://C:/Users/russd/PycharmProjects/HydroFlySimulation/simulationV1.py&#10;get_cv&#9;null&#9;null&#10;PIDContr&#9;null&#9;null" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="HydroFlySimulation" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="HydroFlySimulation" />
+      </console-settings>
+    </option>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -244,7 +325,11 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="RunManager" selected="Python.simulationV2">
+=======
+  <component name="RunManager" selected="Python.SimulationV2">
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
     <configuration name="Python Config" type="PythonConfigurationType" factoryName="Python">
       <module name="HydroFlySimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -252,7 +337,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\russd\PycharmProjects\HydroFlySimulation\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="C:\Users\abenabbou\AppData\Local\Programs\Python\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -266,7 +351,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+<<<<<<< HEAD
     <configuration name="simulationV2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+=======
+    <configuration name="SimulationV2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
       <module name="HydroFlySimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -278,7 +367,11 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+<<<<<<< HEAD
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/simulationV2.py" />
+=======
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SimulationV2.py" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -289,11 +382,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.Python Config" />
+<<<<<<< HEAD
       <item itemvalue="Python.simulationV2" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.simulationV2" />
+=======
+      <item itemvalue="Python.SimulationV2" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.SimulationV2" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
       </list>
     </recent_temporary>
   </component>
@@ -320,23 +421,35 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.17057292" />
+=======
+    <frame x="-1928" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22444679" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
       <window_info id="Structure" order="1" side_tool="true" weight="0.24983476" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.3294271" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32967034" />
+<<<<<<< HEAD
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32692307" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.43681318" />
+=======
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3264642" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.43600866" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32907802" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32907802" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32907802" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49947312" weight="0.329718" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50052685" side_tool="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.3286334" />
       <window_info anchor="bottom" id="Floobits" order="11" weight="0.3282967" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -367,6 +480,15 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SimulationV2.py</url>
+          <line>78</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="t_plus" />
@@ -448,6 +570,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/SimulationV2.py" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="553">
@@ -473,6 +599,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/HardwareInterface.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="17">
           <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
         </state>
@@ -484,24 +611,59 @@
           <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
           <folding>
             <marker date="1538750784776" expanded="true" signature="165:171" ph="..." />
+=======
+        <state relative-caret-position="34">
+          <caret line="2" column="19" lean-forward="true" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulationV1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+          <folding>
+            <element signature="e#194#212#0" expanded="true" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/System.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="70" lean-forward="true" selection-start-line="3" selection-start-column="70" selection-end-line="3" selection-end-column="70" />
+=======
+    <entry file="file://$PROJECT_DIR$/FlightController.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/FlightController.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="425">
           <caret line="25" column="64" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="77" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
+=======
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Grapher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
         </state>
       </provider>
     </entry>
@@ -514,6 +676,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Calculator.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="493">
           <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
           <folding>
@@ -546,6 +709,38 @@
           <folding>
             <element signature="e#90#117#0" expanded="true" />
           </folding>
+=======
+        <state relative-caret-position="234">
+          <caret line="36" column="62" selection-start-line="36" selection-start-column="62" selection-end-line="36" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="331" selection-start-line="331" selection-end-line="331" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="3746" column="5" selection-start-line="3746" selection-end-line="3747" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PID_Controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SimulationV2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
         </state>
       </provider>
     </entry>

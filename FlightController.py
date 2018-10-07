@@ -5,6 +5,7 @@ from Constants import Constants
 
 
 class FlightController:
+<<<<<<< HEAD
     height = 0
     mass = 0
     mass_total = 0
@@ -24,9 +25,15 @@ class FlightController:
         self.mass_structure = 2  # mass of structure [kg]
         self.mass_controls = 1  # mass of control system [kg]
         self.mass_tot = self.mass_water + self.mass_structure + mass_controls
+=======
+    def __init__(self, system, environment):
+        self.sys = system
+>>>>>>> 942642e86c2ae08fe6473ccd3bdc19d30016b423
 
     def do_execution_cycle(self):
-        dc = self.get_duty_cycle(10)
+        self.sys.
+
+        
 
     def get_duty_cycle(self, target_height):
         delta_height = target_height - self.height
