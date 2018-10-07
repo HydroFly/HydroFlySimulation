@@ -9,5 +9,5 @@ dry_weights = np.arange(0.1,2,.1)
 #     graph.show_plots()
 #     graph.clean_data()
 
-run(3)
+run(10)
 graph.show_plots()

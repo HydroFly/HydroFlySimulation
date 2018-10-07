@@ -10,7 +10,7 @@ class Grapher:
         self.vlines = []
         
 
-    def record(self, name, value, t, title, only_positive=False, show_y_axis=False, bottom_at_zero = False):
+    def record(self, name, value, t, title, ylabel, only_positive=False, show_y_axis=False, bottom_at_zero = False):
         if not self.data.get(name, None):
             self.data[name] = {'values': []}
 
@@ -19,6 +19,7 @@ class Grapher:
         self.data[name]['only_positive'] = only_positive
         self.data[name]['show_y_axis'] = show_y_axis
         self.data[name]['bottom_at_zero'] = bottom_at_zero
+        self.data[name]['ylabel'] = ylabel
 
         if len(self.time) < len(self.data[name]['values']):
             self.time.append(t)
@@ -71,6 +72,9 @@ class Grapher:
 
             for x in self.vlines:
                 plt.axvline(x=x, color='green', linestyle='--')
+
+            plt.xlabel('Time, seconds')
+            plt.ylabel(self.data[plot]['ylabel'])
 
             k += 1
         f = open('log.txt', 'a')

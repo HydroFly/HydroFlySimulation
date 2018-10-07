@@ -23,7 +23,7 @@ def run(mass_dry):
     # style.use('ggplot')
     height_flag = False
     ############ Assumptions ###########
-    mass_water = 10  # mass of water [kg]
+    mass_water = 20  # mass of water [kg]
     # mass_dry = 0.2  # dry mass including stuctures and electronics... will update later
     mass_tot = mass_water + mass_dry
     mass_tot_new = mass_tot
@@ -36,7 +36,7 @@ def run(mass_dry):
     gravity = -9.81
     rho_water = 997
 
-    pressure = 500000*20     # Original pressure of pressurant [Pa] 0.5 MPa
+    pressure = 500000*11     # Original pressure of pressurant [Pa] 0.5 MPa
     # volume_gas_orig = 3  # volume of pressurant [m^3]
     target_height = 2  # mission profile height [m]
     pipe_height = .5  # difference in height between nozzle and pressure tanks [m]
@@ -46,13 +46,14 @@ def run(mass_dry):
 
     ###### Simulation Timing ######
     t_plus = 0
-    dt_simulation = 0.1
-    dt_physical = 0.5
+    dt_simulation = 0.05
+    dt_physical = 0.1
     mission_end_time = 200
     timermode2 = 0
 
     # sys = System()
-    PID = PIDController(1, 1, 1, dt_simulation)
+    height_PID = PIDController(1, 1, 1, dt_simulation)
+    velocity_PID = PIDController(1,0,0, dt_simulation) #@dt-physical = .3, then 0.3,0,0.5
 
     # Velocity from ascent PDR
     # add up V(dt) over dt getting height
@@ -75,26 +76,25 @@ def run(mass_dry):
         if height >= target_height and mode == 1:
             clock = t_plus
             mode = 2
-            PID.integral = 0
+            height_PID.integral = 0
             target_height = 2
-            graph.vlines.append(t_plus)
+            # graph.vlines.append(t_plus)
         if mode == 2:
             if t_plus - clock >= 10:
                 target_height = 0
-                graph.vlines.append(t_plus)
+                # graph.vlines.append(t_plus)
                 mode =3
-                PID.clean()
+                height_PID.clean()
+                height_PID.KI = 5
                 flare = False
         if mode == 3:
-            if height < 1:
-                flare = True
-            if flare:
-                target_dv = -0.5 - velocity
-        if not flare:
+            velocity_cv = velocity_PID.get_cv(-0.5, velocity)
+            target_dv = velocity_cv
+        else:
             # # MODE-INDEPENDENT CALC
-            height_cv = PID.get_cv(target_height, height)  # target height - height
+            height_cv = height_PID.get_cv(target_height, height)  # target height - height
 
-            tuning_time = dt_simulation * 100
+            tuning_time = dt_simulation * 20
 
             target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2)
 
@@ -118,7 +118,7 @@ def run(mass_dry):
             mass_water = 0
 
             if timer_flag == False:
-                mission_end_time = t_plus
+                mission_end_time = t_plus + 10
                 timer_flag = True
 
         m_dot = duty_cycle * m_dot_max
@@ -140,9 +140,9 @@ def run(mass_dry):
             velocity = 0
 
         t_plus += dt_simulation
-        graph.record("height", height, t_plus, "Height", only_positive=True)
-        graph.record("velocity", velocity, t_plus, "Velocity")
-        graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle")
-        graph.record("mass_water", mass_water, t_plus, "Mass of Water", bottom_at_zero=True)
-        graph.record("dv", dv, t_plus, "dv")
+        graph.record("height", height, t_plus, "Height", "Height, m", only_positive=True)
+        graph.record("velocity", velocity, t_plus, "Velocity", "Velocity, m/s")
+        graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle", "Duty Cycle, %")
+        graph.record("mass_water", mass_water, t_plus, "Mass of Water", "Mass, kg", bottom_at_zero=True)
+        # graph.record("dv", dv, t_plus, "dv")
     # graph.show_plots()
