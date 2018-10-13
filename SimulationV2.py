@@ -8,11 +8,11 @@ from Calculator import Calculator
 # from System import System
 from PID_Controller import PIDController
 
-from numpy import *
 import matplotlib.pyplot as plt
 graph = Grapher()
 
 from matplotlib import style
+from numpy import *
 
 
 def run(mass_dry):
@@ -36,24 +36,24 @@ def run(mass_dry):
     gravity = -9.81
     rho_water = 997
 
-    pressure = 500000*11     # Original pressure of pressurant [Pa] 0.5 MPa
+    pressure = 500000     # Original pressure of pressurant [Pa] 0.5 MPa
     # volume_gas_orig = 3  # volume of pressurant [m^3]
     target_height = 2  # mission profile height [m]
     pipe_height = .5  # difference in height between nozzle and pressure tanks [m]
 
-    nozzle_diam = 0.01  # [m]
+    nozzle_diam = 0.01 /2 # [m]
     nozzle_area = Calculator.nozzle_area(nozzle_diam)
 
     ###### Simulation Timing ######
     t_plus = 0
-    dt_simulation = 0.05
-    dt_physical = 0.1
+    dt_simulation = 0.005
+    dt_physical = 0.05
     mission_end_time = 200
     timermode2 = 0
 
     # sys = System()
-    height_PID = PIDController(1, 1, 1, dt_simulation)
-    velocity_PID = PIDController(1,0,0, dt_simulation) #@dt-physical = .3, then 0.3,0,0.5
+    height_PID = PIDController(1, 0, 1, dt_simulation)
+    velocity_PID = PIDController(1,1,1, dt_simulation) #@dt-physical = .3, then 0.3,0,0.5
 
     # Velocity from ascent PDR
     # add up V(dt) over dt getting height
@@ -94,9 +94,9 @@ def run(mass_dry):
             # # MODE-INDEPENDENT CALC
             height_cv = height_PID.get_cv(target_height, height)  # target height - height
 
-            tuning_time = dt_simulation * 20
+            tuning_time = dt_simulation * 200
 
-            target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2)
+            target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2) /4
 
         target_d_mass = mass_tot * exp((gravity * dt_simulation / ue) - (target_dv / ue))
         m_dot_target = (mass_tot - target_d_mass) / dt_simulation
@@ -121,7 +121,7 @@ def run(mass_dry):
                 mission_end_time = t_plus + 10
                 timer_flag = True
 
-        m_dot = duty_cycle * m_dot_max
+        m_dot = 4 * duty_cycle * m_dot_max
 
         mass_tot_new -= m_dot * dt_simulation
         mass_water -= m_dot * dt_simulation
@@ -132,17 +132,20 @@ def run(mass_dry):
         velocity += dv
         height += velocity * dt_simulation
 
+        if dv > 0:
+            height_flag = True
+
         if height < 0:
             height = 0
-            if height_flag == False:
-                graph.vlines.append(t_plus)
-            height_flag = True
             velocity = 0
+            if height_flag:
+                graph.vlines.append(t_plus)
+                return t_plus
 
         t_plus += dt_simulation
-        graph.record("height", height, t_plus, "Height", "Height, m", only_positive=True)
-        graph.record("velocity", velocity, t_plus, "Velocity", "Velocity, m/s")
-        graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle", "Duty Cycle, %")
-        graph.record("mass_water", mass_water, t_plus, "Mass of Water", "Mass, kg", bottom_at_zero=True)
+        # graph.record("height", height, t_plus, "Height", "Height, m", only_positive=True)
+        # graph.record("velocity", velocity, t_plus, "Velocity", "Velocity, m/s")
+        # graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle", "Duty Cycle, %")
+        # graph.record("mass_water", mass_water, t_plus, "Mass of Water", "Mass, kg", bottom_at_zero=True)
         # graph.record("dv", dv, t_plus, "dv")
     # graph.show_plots()
