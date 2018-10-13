@@ -15,3 +15,5 @@ def do_weight_vary():
     plt.ylabel('Time-of-flight, seconds')
     plt.xlabel('Dry Mass, kg')
     plt.show()
+
+do_weight_vary()
