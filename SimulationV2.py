@@ -15,16 +15,14 @@ from matplotlib import style
 from numpy import *
 
 
-def run(mass_dry):
+def run(mass_dry = 10, pressure=5*10**5):
     # plt.ion()
     flare = False
-    style.use('bmh')
-    # style.use('fivethirtyeight')
-    # style.use('ggplot')
+    # style.use('bmh')
     height_flag = False
     ############ Assumptions ###########
     mass_water = 20  # mass of water [kg]
-    # mass_dry = 0.2  # dry mass including stuctures and electronics... will update later
+     # dry mass including stuctures and electronics... will update later
     mass_tot = mass_water + mass_dry
     mass_tot_new = mass_tot
 
@@ -36,7 +34,7 @@ def run(mass_dry):
     gravity = -9.81
     rho_water = 997
 
-    pressure = 500000     # Original pressure of pressurant [Pa] 0.5 MPa
+    # pressure = 500000     # Original pressure of pressurant [Pa] 0.5 MPa
     # volume_gas_orig = 3  # volume of pressurant [m^3]
     target_height = 2  # mission profile height [m]
     pipe_height = .5  # difference in height between nozzle and pressure tanks [m]
@@ -47,7 +45,7 @@ def run(mass_dry):
     ###### Simulation Timing ######
     t_plus = 0
     dt_simulation = 0.005
-    dt_physical = 0.05
+    dt_physical = 0.005
     mission_end_time = 200
     timermode2 = 0
 
@@ -65,6 +63,8 @@ def run(mass_dry):
     mode = 1
     ue = sqrt(2 * (pressure / rho_water + gravity * pipe_height))
     m_dot_max = Calculator.m_dot(nozzle_area, ue)
+
+    t_liftoff = 0
 
     # potential_height = 0
 
@@ -132,7 +132,7 @@ def run(mass_dry):
         velocity += dv
         height += velocity * dt_simulation
 
-        if dv > 0:
+        if dv > 0.00001:
             height_flag = True
 
         if height < 0:
@@ -140,7 +140,9 @@ def run(mass_dry):
             velocity = 0
             if height_flag:
                 graph.vlines.append(t_plus)
-                return t_plus
+                return t_plus - t_liftoff
+            else:
+                t_liftoff = t_plus
 
         t_plus += dt_simulation
         # graph.record("height", height, t_plus, "Height", "Height, m", only_positive=True)
@@ -149,3 +151,5 @@ def run(mass_dry):
         # graph.record("mass_water", mass_water, t_plus, "Mass of Water", "Mass, kg", bottom_at_zero=True)
         # graph.record("dv", dv, t_plus, "dv")
     # graph.show_plots()
+
+    return 0
