@@ -39,7 +39,7 @@ class Calculator:
     @staticmethod
     def delta_v_required(delta_height):
         return np.sqrt(abs(2 * 9.81 * delta_height))
-
+ 
     @staticmethod
     def modulus(a, b):
         return round(((round(a % b, 5)) % b), 5)
