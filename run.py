@@ -1,4 +1,4 @@
-from SimulationV2 import run, graph
+from Simulation import run, graph
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as matplotlib
