@@ -1,5 +1,4 @@
 import numpy as np
-from Constants import Constants
 
 class Calculator:
     @staticmethod
@@ -9,15 +8,15 @@ class Calculator:
     @staticmethod
     def potential_height(mass, height, velocity):
         #return height + 0.5 * mass * velocity ** 2
-        return height + (0.5*(velocity**2)/abs(Constants.gravity))
+        return height + (0.5*(velocity**2)/abs(9.81))
         #check valid 10/06/18 - Thomas Slusser
     @staticmethod
     def exit_velocity(pressure, pipe_height):
-        return np.sqrt(2 * ((pressure / Constants.rho_water) + Constants.gravity * pipe_height))
+        return np.sqrt(2 * ((pressure / 997) + -9.81 * pipe_height))
         # assumed correct due to work with Chandler - 10/06/18 
     @staticmethod
     def m_dot(nozzle_area, exit_velocity):
-        m_dot = Constants.rho_water * nozzle_area * exit_velocity
+        m_dot = 997 * nozzle_area * exit_velocity
         if m_dot < 0:
             m_dot = 0
         return m_dot
@@ -34,7 +33,7 @@ class Calculator:
 
     @staticmethod
     def target_d_mass(mass, ue, target_dv, dt):
-        return mass * np.exp((Constants.gravity * dt / ue) - (target_dv / ue))
+        return mass * np.exp((-9.81 * dt / ue) - (target_dv / ue))
 
     @staticmethod
     def delta_v_required(delta_height):
