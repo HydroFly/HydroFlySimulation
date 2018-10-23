@@ -62,12 +62,14 @@ def run(options):
     m_dot_max = Calculator.m_dot(nozzle_area, ue)
 
     while t_plus <= mission_end_time:
+        # mode 1 is ascent
         if mode == 1 and height >= target_height:
             clock = t_plus
             mode = 2
             height_PID.integral = 0
-            target_height = 2
+            target_height = config['target_height']
 
+        # mode 2 is hover
         if mode == 2:
             if t_plus - clock >= 10:
                 target_height = 0
@@ -75,6 +77,7 @@ def run(options):
                 height_PID.clean()
                 height_PID.KI = 5
 
+        # mode 3 is descent 
         if mode == 3:
             velocity_cv = velocity_PID.get_cv(-0.5, velocity)
             target_dv = velocity_cv
@@ -107,7 +110,7 @@ def run(options):
             m_dot_max = 0
             mass_water = 0
 
-        m_dot = 4 * duty_cycle * m_dot_max
+        m_dot = duty_cycle * m_dot_max
 
         mass_tot_new -= m_dot * dt_simulation
         mass_water -= m_dot * dt_simulation
