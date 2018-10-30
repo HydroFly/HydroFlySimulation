@@ -17,15 +17,7 @@ graph = Grapher()
 
 def run(options):
     # Default Configuration
-    config = {
-        "dry_mass": 2,
-        "mass_water": 20,
-        "propellant_pressure": 500000,
-        "propellant_volume": 3,
-        "target_height": 2,
-        "pipe_height": 0.5,
-        "nozzle_diam": 0.005
-    }
+    config = {}
     config.update(options)
 
     has_taken_off = False
@@ -52,9 +44,9 @@ def run(options):
 
     t_plus = 0
     t_liftoff = 0
-    dt_simulation = 0.05
-    dt_physical = 0.05
-    mission_end_time = 200
+    dt_simulation = 0.01
+    response_time = 0.01 # sec
+    mission_end_time = 20
 
     height_PID = PIDController(1, 0, 1, dt_simulation)
     velocity_PID = PIDController(1, 1, 1, dt_simulation)
@@ -65,13 +57,17 @@ def run(options):
     ue = sqrt(2 * (pressure / rho_water + gravity * pipe_height))
     m_dot_max = Calculator.m_dot(nozzle_area, ue)
 
+
+
+#mainloop 
+
     while t_plus <= mission_end_time:
         # mode 1 is ascent
         if mode == 1 and height >= target_height:
             clock = t_plus
             mode = 2
             height_PID.integral = 0
-            target_height = config['target_height']
+          
 
         # mode 2 is hover
         if mode == 2:
@@ -83,19 +79,26 @@ def run(options):
 
         # mode 3 is descent 
         if mode == 3:
-            velocity_cv = velocity_PID.get_cv(-0.5, velocity)
+            velocity_cv = velocity_PID.get_cv(-0.5, velocity) # -0.5 should be a safe descent rate
             target_dv = velocity_cv
 
         else:
             height_cv = height_PID.get_cv(target_height, height)  # target height - height
-            tuning_time = dt_simulation * 20
-            target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2) / 4
+
+
+            tuning_time = .2 #we said 20 for now because too small and the PID can't predict jackshit. I think this shouldn't be a multiplier on simulation time, rather a constant value
+            target_dv =  2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2) # divided by 4 by Russell (4 nozzles?)
+            print("target dv ", target_dv)
 
         target_d_mass = mass_tot * exp((gravity * dt_simulation / ue) - (target_dv / ue))
+
+
         m_dot_target = (mass_tot - target_d_mass) / dt_simulation
 
+        #print("dt physical", response_time)
         # PWM, PID
-        if Calculator.modulus(t_plus, dt_physical) == 0:
+        #print("modulus", Calculator.modulus(t_plus, response_time))
+        if Calculator.modulus(t_plus, response_time) == 0:
             if m_dot_max != 0:
                 duty_cycle = (m_dot_target / m_dot_max)
             else:
@@ -103,7 +106,9 @@ def run(options):
             if duty_cycle < 0:
                 duty_cycle = 0
             if duty_cycle > 1:
+                #print a flag here?
                 duty_cycle = 1
+        
         if mass_water <= 0 and system_has_lost_propulsion == False:
             system_has_lost_propulsion = True
             m_dot_max = 0
@@ -114,8 +119,8 @@ def run(options):
             m_dot_max = 0
             mass_water = 0
 
-        #m_dot = duty_cycle * m_dot_max
-        m_dot = m_dot_max
+        m_dot = duty_cycle * m_dot_max
+
         mass_tot_new -= m_dot * dt_simulation
         mass_water -= m_dot * dt_simulation
 
@@ -147,3 +152,5 @@ def run(options):
     data['time_of_flight'] = t_plus - t_liftoff
 
     return data
+
+

@@ -3,7 +3,7 @@ import numpy as np
 class Calculator:
     @staticmethod
     def nozzle_area(nozzle_diam):
-        return np.pi * (nozzle_diam/2) ** 2
+        return np.pi * ((nozzle_diam/2) ** 2)
         #check valid 10/06/18 - Thomas Slusser
     @staticmethod
     def potential_height(mass, height, velocity):
@@ -13,6 +13,7 @@ class Calculator:
     @staticmethod
     def exit_velocity(pressure, pipe_height):
         return np.sqrt(2 * ((pressure / 997) + -9.81 * pipe_height))
+        #return np.sqrt(2* (pressure - (997*9.81*pipe_height)))
         # assumed correct due to work with Chandler - 10/06/18 
     @staticmethod
     def m_dot(nozzle_area, exit_velocity):
