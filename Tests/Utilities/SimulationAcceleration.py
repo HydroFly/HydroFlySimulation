@@ -11,70 +11,116 @@ import matplotlib.pyplot as plt
 
 
 class Cannon:
-    def __init__(self, x0, y0, v, angle):
-
+    def __init__(self, y0, v):
         # current x and y coordinates of the missile
-        self.x    = x0
         self.y    = y0
         # current value of velocity components
-        self.vx  = v*cos(radians(angle))
-        self.vy  = v*sin(radians(angle))
+        self.vy  = v
         # acceleration by x and y axes
-        self.ax   = 0
-        self.ay   = -9.8
+        #self.ay   = -9.8
         # start time
         self.time = 0
         # these list will contain discrete set of missile coordinates
-        self.xarr = [self.x]
         self.yarr = [self.y]
 
-
-    def updateVx(self, dt):
-        self.vx = self.vx + self.ax*dt
-        return self.vx
-    def updateVy(self, dt):
-        self.vy = self.vy + self.ay*dt
+    def updateVy(self, dt, newa):
+        self.vy = self.vy + newa*dt
         return self.vy
 
-
-    def updateX(self, dt):
-        self.x = self.x + 0.5*(self.vx + self.updateVx(dt))*dt
-        return self.x
-    def updateY(self, dt):
-        self.y = self.y + 0.5*(self.vy + self.updateVy(dt))*dt
+    def updateY(self, dt, newa):
+        self.y = self.y + 0.5*(self.vy + self.updateVy(dt, newa))*dt
         return self.y
 
-    def step(self, dt):
-        self.xarr.append(self.updateX(dt))
-        self.yarr.append(self.updateY(dt))
+    def step(self, dt, newa):
+        self.yarr.append(self.updateY(dt, newa))
         self.time = self.time + dt
 
 
-def makeShoot(x0, y0, velocity, angle):
-    """
-    Returns a tuple with sequential pairs of x and y coordinates
-    """
-    cannon = Cannon(x0, y0, velocity, angle)
-    dt = 0.05 # time step
-    t = 0 # initial time
-    cannon.step(dt)
-    ###### THE  INTEGRATION ######
-    while cannon.y >= 0:
-        cannon.step(dt)
-        t = t + dt
-    ##############################
-    return (cannon.xarr, cannon.yarr)
 
-def main():
-    x0 = 0
+# def main():
+#     x0 = 0
+#     y0 = 0
+#     velocity = 15
+#     y6 = makeShoot(y0, velocity)
+#     print(y6)
+#     plt.plot(y6, 'bo-',
+#         #[0, 12], [0, 0], 'k-' # ground
+#         )
+#     plt.legend(['XX'])
+#     plt.xlabel('X coordinate (m)')
+#     plt.ylabel('Y coordinate (m)')
+#     plt.show()
+
+
+graph = Grapher()
+
+
+def run(options):
+    # Default Configuration
+
+    rho_water = 997
+    gravity = 9.81 
+
+    config = {}
+
+    config.update(options)
+
+    mass_water = config['mass_water']  # mass of water [kg]
+    mass_dry = config['dry_mass']
+    mass_start = mass_water + mass_dry
+    mass_tot_new = mass_start
+
+    weight_start = (mass_start*gravity)
+
+    target_height = config['target_height']  # mission profile height [m]
+    pipe_height = config['pipe_height']  # difference in height between nozzle and pressure tanks [m]
+    nozzle_diam = config['nozzle_diam']  # [m]
+    pressure = config['propellant_pressure']   
+
+    height = 0
+    velocity = 0
+
+
+    t_plus = 0.0
+    dt_simulation = 0.05
+    mission_end_time = 20
+
+    nozzle_area = Calculator.nozzle_area(nozzle_diam)
+    exit_velocity = np.sqrt(2* ((pressure/rho_water) - (9.81*pipe_height)))
+    m_dot_max = Calculator.m_dot(nozzle_area, exit_velocity)
+    thrust = m_dot_max*exit_velocity#+ ( (pressure-101325)*nozzle_area)
+    acceleration = (thrust/mass_tot_new) - gravity
+
+    print("thrust", thrust, "N")
+    print(exit_velocity)
+    print("weight", weight_start, "N")
+    print("initial acceleration", acceleration)
+
     y0 = 0
-    velocity = 10
-    x6, y6 = makeShoot(x0, y0, velocity, 45)
+    velocity = 0
+
+    hydrofly = Cannon(y0, velocity)
+    hydrofly.step(dt_simulation, acceleration)
+
+    ###### THE  INTEGRATION ######
+    while hydrofly.y <= 50:
+        mass_tot_new = mass_tot_new - (m_dot_max*dt_simulation)
+        acceleration = (thrust/mass_tot_new) - gravity
+        print("thrust", thrust, "N")
+        print("weight", mass_tot_new*gravity, "N")
+        print("acceleration", acceleration)
+        hydrofly.step(dt_simulation, acceleration)
+        t_plus = t_plus + dt_simulation
+    ##############################
+    #return (cannon.yarr)
+    y6 = hydrofly.yarr
+
+
     print(y6)
-    plt.plot(x6, y6, 'bo-',
-        [0, 12], [0, 0], 'k-' # ground
+    plt.plot(y6, 'bo-',
+        #[0, 12], [0, 0], 'k-' # ground
         )
-    plt.legend(['60 deg shoot'])
+    plt.legend(['XX'])
     plt.xlabel('X coordinate (m)')
     plt.ylabel('Y coordinate (m)')
     plt.show()
@@ -83,108 +129,49 @@ def main():
 
 
 
-graph = Grapher()
-
-
-def run(options):
-    # Default Configuration
-    config = {
- 
-    }
-    config.update(options)
-
-    has_taken_off = False
-    mass_water = config['mass_water']  # mass of water [kg]
-    mass_dry = config['dry_mass']
-    mass_tot = mass_water + mass_dry
-    mass_tot_new = mass_tot
-    original_mass = mass_tot
-    height = 0
-    velocity = 0
-    system_has_lost_propulsion = False
-
-    gravity = -9.81
-    rho_water = 997
-
-    target_height = config['target_height']  # mission profile height [m]
-    pipe_height = config['pipe_height']  # difference in height between nozzle and pressure tanks [m]
-
-    nozzle_diam = config['nozzle_diam']  # [m]
-    nozzle_area = Calculator.nozzle_area(nozzle_diam)
-
-    pressure = config['propellant_pressure']
-
-    t_plus = 0.0
-    t_liftoff = 0
-    dt_simulation = 0.05
-    dt_physical = 0.05
-    mission_end_time = 200
-
-
-
-    duty_cycle = 0
-    data = {}
-    mode = 1
-    exit_velocity = np.sqrt(2* ((pressure/997) - (9.81*pipe_height)))
-    print(exit_velocity)
-    m_dot_max = Calculator.m_dot(nozzle_area, exit_velocity)
-    m_dot = m_dot_max
-    gravity = 9.81 
-    t_plus = 0
-
-    thrust = m_dot*exit_velocity + ( (pressure-101325)*nozzle_area)
-    print("thrust", thrust, "N")
-    new_weight = (original_mass*gravity)
-    print("weight", new_weight, "N")
-    velocity = 0 
-    old_acceleration = 0 
-    old_velocity = 0
-
-    main()
 
 
 
 
 
+    # while t_plus <= 10.00:
+    #     #ascentHeight = (-0.5*gravity*(t_plus**2)) + (exit_velocity*log(original_mass)*t_plus) + ((exit_velocity/m_dot)*(original_mass-(m_dot*t_plus))*(log(original_mass - (m_dot*t_plus)) -1)) - ((exit_velocity/m_dot)*original_mass*(log(original_mass) -1)) 
 
-    while t_plus <= 10.00:
-        #ascentHeight = (-0.5*gravity*(t_plus**2)) + (exit_velocity*log(original_mass)*t_plus) + ((exit_velocity/m_dot)*(original_mass-(m_dot*t_plus))*(log(original_mass - (m_dot*t_plus)) -1)) - ((exit_velocity/m_dot)*original_mass*(log(original_mass) -1)) 
-
-        new_weight = (original_mass- (m_dot*t_plus))*gravity
-        if new_weight > 0:
-            acceleration = (thrust-new_weight)/(new_weight)
-        else:
-            acceleration = -9.81 
+    #     new_weight = (original_mass- (m_dot*t_plus))*gravity
+    #     if new_weight > 0:
+    #         acceleration = (thrust-new_weight)/(new_weight)
+    #     else:
+    #         acceleration = -9.81 
         
-        #d_acceleration = acceleration - old_acceleration
+    #     #d_acceleration = acceleration - old_acceleration
 
-        velocity = acceleration*dt_simulation
+    #     velocity = acceleration*dt_simulation
 
-        d_height = (velocity*dt_simulation)/2
-        print("change in velocity:", velocity)
+    #     d_height = (velocity*dt_simulation)/2
+    #     print("change in velocity:", velocity)
 
-        #height = 
+    #     #height = 
 
-        #dv = (gravity * dt_simulation) + (exit_velocity * log(original_mass / mass_tot_new))
-        #if(ascentHeight < 0):
-            #ascentHeight = 0
-            #dv = 0
-        #velocity = velocity + dv
+    #     #dv = (gravity * dt_simulation) + (exit_velocity * log(original_mass / mass_tot_new))
+    #     #if(ascentHeight < 0):
+    #         #ascentHeight = 0
+    #         #dv = 0
+    #     #velocity = velocity + dv
 
         
-        print("weight", new_weight, "N")
-        print("acceleration", acceleration, "m/s^2")
+    #     print("weight", new_weight, "N")
+    #     print("acceleration", acceleration, "m/s^2")
 
-        graph.record("height", d_height, t_plus, "Height", "Height, m")
-        graph.record("velocity", velocity, t_plus, "velocity", "velocity, m")
-        graph.record("mass", (new_weight/gravity), t_plus, "mass", "mass", "kg")
-        t_plus += dt_simulation
-
-
+    #     graph.record("height", d_height, t_plus, "Height", "Height, m")
+    #     graph.record("velocity", velocity, t_plus, "velocity", "velocity, m")
+    #     graph.record("mass", (new_weight/gravity), t_plus, "mass", "mass", "kg")
+    #     t_plus += dt_simulation
 
 
-    graph.show_plots()
-    plt.figure(2)
+
+
+    # graph.show_plots()
+    # plt.figure(2)
 
 
 """ 

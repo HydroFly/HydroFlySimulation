@@ -15,9 +15,11 @@ graph = Grapher()
 
 
 
-def run(options):
+def run(options, flag):
     # Default Configuration
-    config = {}
+    config = {
+
+    }
     config.update(options)
 
     has_taken_off = False
@@ -44,8 +46,8 @@ def run(options):
 
     t_plus = 0
     t_liftoff = 0
-    dt_simulation = 0.01
-    response_time = 0.01 # sec
+    dt_simulation = 0.025
+    response_time = 0.025 # sec
     mission_end_time = 20
 
     height_PID = PIDController(1, 0, 1, dt_simulation)
@@ -57,9 +59,11 @@ def run(options):
     ue = sqrt(2 * (pressure / rho_water + gravity * pipe_height))
     m_dot_max = Calculator.m_dot(nozzle_area, ue)
 
+    thrust = m_dot_max*ue#+ ( (pressure-101325)*nozzle_area)
+    acceleration = (thrust/mass_tot) - gravity
 
-
-mainloop 
+    print("thrust:", thrust)
+    print("acceleration :", acceleration)
 
     while t_plus <= mission_end_time:
         # mode 1 is ascent
@@ -88,7 +92,7 @@ mainloop
 
             tuning_time = .2 #we said 20 for now because too small and the PID can't predict jackshit. I think this shouldn't be a multiplier on simulation time, rather a constant value
             target_dv =  2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2) # divided by 4 by Russell (4 nozzles?)
-            print("target dv ", target_dv)
+            #print("target dv ", target_dv)
 
         target_d_mass = mass_tot * exp((gravity * dt_simulation / ue) - (target_dv / ue))
 
@@ -145,8 +149,10 @@ mainloop
         graph.record("velocity", velocity, t_plus, "Velocity", "Velocity, m/s")
         graph.record("duty_cycle", duty_cycle, t_plus, "Duty Cycle", "Duty Cycle, %")
         graph.record("mass_water", mass_water, t_plus, "Mass of Water", "Mass, kg", bottom_at_zero=True)
-    graph.show_plots()
-    plt.figure(2)
+
+    if flag == True:  
+        graph.show_plots()
+        plt.figure(2)
 
     data['time_of_flight'] = t_plus - t_liftoff
 

@@ -1,13 +1,28 @@
-from Utilities.Simulation import run
+from Utilities.Simulationv4 import run
 import numpy as np
 import matplotlib.pyplot as plt
 
-tank_pressures = np.arange(5 * 10 ** 5, 10 * 10 ** 6, 1 * 10 ** 4)
+tank_pressures = np.arange(5 * 10 ** 5, # small pressure value 
+                            10 * 10 ** 6, # large pressure value 
+                            1 * 10 ** 6) # increment, I think 
 x = []
 y = []
 
+
+config = {
+    "dry_mass": 4, # kg 
+    "mass_water": 6, # kg 
+    "propellant_pressure": 5000000, # Pa
+    "target_height": 2, # m
+    "pipe_height": 0.3, # m 
+    "nozzle_diam": 0.01 # m
+}
+
+
+
 for pressure in tank_pressures:
-    t = run({"propellant_pressure": pressure})
+    config["propellant_pressure"] = pressure
+    t = run(config, False)
     y.append(t['time_of_flight'])
     x.append(pressure)
 

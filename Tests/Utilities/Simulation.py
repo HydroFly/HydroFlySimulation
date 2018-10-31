@@ -54,7 +54,7 @@ def run(options):
     t_liftoff = 0
     dt_simulation = 0.05
     dt_physical = 0.05
-    mission_end_time = 200
+    mission_end_time = 20
 
     height_PID = PIDController(1, 0, 1, dt_simulation)
     velocity_PID = PIDController(1, 1, 1, dt_simulation)
@@ -77,8 +77,7 @@ def run(options):
         if mode == 2:
             if t_plus - clock >= 10:
                 target_height = 0
-                mode = 3
-                height_PID.clean()
+                mode = 3                height_PID.clean()
                 height_PID.KI = 5
 
         # mode 3 is descent 
@@ -88,8 +87,9 @@ def run(options):
 
         else:
             height_cv = height_PID.get_cv(target_height, height)  # target height - height
-            tuning_time = dt_simulation * 20
-            target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2) / 4
+            #tuning_time = dt_simulation * 20
+            #target_dv = 2 * (height_cv - velocity * tuning_time) / (tuning_time ** 2) / 4
+            
 
         target_d_mass = mass_tot * exp((gravity * dt_simulation / ue) - (target_dv / ue))
         m_dot_target = (mass_tot - target_d_mass) / dt_simulation
